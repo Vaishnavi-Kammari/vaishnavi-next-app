@@ -11,15 +11,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Log in to GHCR
+      - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: vaishuk27
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
       - name: Build Docker image
         run: |
-          IMAGE_TAG=ghcr.io/vaishnavi/vaishnavi-next-app:latest
+          IMAGE_TAG=vaishuk27/vaishnavi-next-app:latest
           docker build -t $IMAGE_TAG .
           docker push $IMAGE_TAG
