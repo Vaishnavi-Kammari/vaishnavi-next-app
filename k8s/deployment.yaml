@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: vaishnavi-next-app
-        image: ghcr.io/vaishnavi/vaishnavi-next-app:latest
+        image: vaishuk27/vaishnavi-next-app:latest
         ports:
         - containerPort: 3000
         readinessProbe:
