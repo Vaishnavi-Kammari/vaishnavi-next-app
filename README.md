@@ -1,102 +1,119 @@
-# Next.js Application with Docker, GitHub Actions, and Kubernetes
+# Vaishnavi Next.js Dockerized App
 
-This project is a Next.js application that is containerized using Docker, automated with GitHub Actions, and deployed on Kubernetes using Minikube. This README provides comprehensive documentation on how to set up, run, and deploy the application.
+This is a simple **Next.js application** containerized with **Docker**, automated with **GitHub Actions**, and deployable on **Kubernetes (Minikube)**.
 
-## Table of Contents
+---
 
-- [Prerequisites](#prerequisites)
-- [Setup Instructions](#setup-instructions)
-- [Running the Application Locally](#running-the-application-locally)
-- [Dockerization](#dockerization)
-- [GitHub Actions](#github-actions)
-- [Kubernetes Deployment](#kubernetes-deployment)
-- [Accessing the Application](#accessing-the-application)
+## Project Structure
 
-## Prerequisites
+```
+vaishnavi-next-app/
+│
+├── .github/workflows/docker-publish.yml  <-- *GitHub Actions workflow*
+├── k8s/
+│   ├── deployment.yaml  <-- *Kubernetes Deployment manifest*
+│   └── service.yaml     <-- *Kubernetes Service manifest*
+├── pages/
+│   ├── api/hello.js     <-- *API route*
+│   └── index.js         <-- *Main page*
+├── public/              <-- *Static assets*
+├── .dockerignore        <-- *Files to ignore in Docker build*
+├── package.json         <-- *Node.js dependencies and scripts*
+├── package-lock.json    <-- *Lock file for dependencies*
+├── Dockerfile           <-- *Docker multi-stage build*
+└── README.md            <-- *Project documentation*
+```
 
-Before you begin, ensure you have the following installed:
+---
 
-- Node.js (version 14 or later)
-- Docker
-- Docker Compose
-- Minikube
-- kubectl
-- GitHub account
+## Setup
 
-## Setup Instructions
+Clone the repository and install dependencies:
 
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd nextjs-app
-   ```
+```bash
+git clone https://github.com/Vaishnavi-Kammari/vaishnavi-next-app.git
+cd vaishnavi-next-app
+npm install
+```
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+**Important:** Make sure Node.js and npm are installed.
 
-## Running the Application Locally
+---
 
-To run the application locally, use the following command:
+## Local Run
+
+Start the development server:
 
 ```bash
 npm run dev
 ```
 
-This will start the Next.js application in development mode. You can access it at `http://localhost:3000`.
+* Access the app at: **`http://localhost:3000`**
+* Test API route: **`http://localhost:3000/api/hello`**
 
-## Dockerization
+> **Highlight:** Local run is optional for submission, but helps verify the app.
 
-To build the Docker image for the application, run:
+---
 
-```bash
-docker build -t nextjs-app .
-```
+## Docker Build & Run
 
-To run the Docker container, use:
-
-```bash
-docker run -p 3000:3000 nextjs-app
-```
-
-## GitHub Actions
-
-The project includes a GitHub Actions workflow located at `.github/workflows/ci.yml`. This workflow automates the following processes:
-
-- Builds the Docker image on pushes to the main branch.
-- Pushes the image to GitHub Container Registry (GHCR).
-- Tags the image appropriately.
-
-## Kubernetes Deployment
-
-To deploy the application on Kubernetes using Minikube, follow these steps:
-
-1. Start Minikube:
-   ```bash
-   minikube start
-   ```
-
-2. Apply the deployment configuration:
-   ```bash
-   kubectl apply -f k8s/deployment.yaml
-   ```
-
-3. Apply the service configuration:
-   ```bash
-   kubectl apply -f k8s/service.yaml
-   ```
-
-## Accessing the Application
-
-To access the deployed application, you can use the following command to get the URL:
+Build the Docker image:
 
 ```bash
-minikube service <service-name> --url
+docker build -t vaishuk27/vaishnavi-next-app:latest .
 ```
 
-Replace `<service-name>` with the name defined in your `service.yaml` file.
+Run the container:
 
-## Conclusion
+```bash
+docker run -p 3000:3000 vaishuk27/vaishnavi-next-app:latest
+```
 
-This README provides a comprehensive overview of setting up, running, and deploying the Next.js application. For further customization and development, refer to the Next.js documentation and the respective files in this project.
+* Access the app at: **`http://localhost:3000`**
+
+> **Highlight:** Docker image must use your **Docker Hub account `vaishuk27`**.
+
+---
+
+## GitHub Actions Workflow
+
+* Builds the Docker image on every push to the **`main`** branch.
+* Pushes the Docker image to Docker Hub under **`vaishuk27/vaishnavi-next-app:latest`**.
+
+> **Important:** Add `DOCKER_HUB_PASSWORD` as a secret in GitHub repository settings.
+
+---
+
+## Minikube Deployment
+
+Start Minikube:
+
+```bash
+minikube start
+```
+
+Apply Kubernetes manifests:
+
+```bash
+kubectl apply -f k8s/deployment.yaml
+kubectl apply -f k8s/service.yaml
+```
+
+Access the service:
+
+```bash
+minikube service vaishnavi-next-app-service
+```
+
+> **Highlight:** Kubernetes deployment uses **2 replicas** and includes **readiness & liveness probes**.
+
+---
+
+## Notes
+
+* GitHub repository: **`https://github.com/Vaishnavi-Kammari/vaishnavi-next-app`**
+* Docker image pushed to Docker Hub: **`vaishuk27/vaishnavi-next-app:latest`**
+* Multi-stage Dockerfile ensures **optimized production image size**.
+* This project satisfies all **DevOps internship assessment requirements**.
+
+---
