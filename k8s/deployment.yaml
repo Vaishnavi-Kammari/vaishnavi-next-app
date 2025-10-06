@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vaishnavi-next-app-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: vaishnavi-next-app
+  template:
+    metadata:
+      labels:
+        app: vaishnavi-next-app
+    spec:
+      containers:
+      - name: vaishnavi-next-app
+        image: ghcr.io/vaishnavi/vaishnavi-next-app:latest
+        ports:
+        - containerPort: 3000
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 15
+          periodSeconds: 20
